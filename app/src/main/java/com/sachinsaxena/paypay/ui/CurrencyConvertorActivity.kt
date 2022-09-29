@@ -1,0 +1,112 @@
+package com.sachinsaxena.paypay.ui
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import com.sachinsaxena.common.base.ActionPerformer
+import com.sachinsaxena.common.base.BaseBindingActivity
+import com.sachinsaxena.common.base.OnCurrencySelect
+import com.sachinsaxena.common.extensions.gone
+import com.sachinsaxena.common.extensions.toast
+import com.sachinsaxena.common.extensions.visible
+import com.sachinsaxena.paypay.databinding.ActivityCurrencyConvertorBinding
+import com.sachinsaxena.paypay.model.CurrencyDetails
+
+class CurrencyConvertorActivity :
+    BaseBindingActivity<CurrencyConvertorViewModel, ActivityCurrencyConvertorBinding>() {
+
+    companion object {
+        private const val TAG = "CurrencyConvertorActivity"
+
+        fun getStartIntent(context: Context): Intent =
+            Intent(context, CurrencyConvertorActivity::class.java)
+    }
+
+    private val currencyAdapter: CurrencyListAdaptor by lazy {
+        CurrencyListAdaptor(object : ActionPerformer {
+            override fun performAction(action: Any) {
+                when (action) {
+                    is OnCurrencySelect -> {
+                        val value = binding.etAmount.text
+                        if (value.isNullOrBlank()) {
+                            toast("Please enter yout amount")
+                            return
+                        }
+                        val currencyFrom = viewModel.currencyDetailsFrom.value
+                        if (currencyFrom == null) {
+                            toast("Please select your currency")
+                            return
+                        }
+                        binding.btConvert.text = viewModel.getConvertedRate(
+                            binding.etAmount.text.toString().toDouble(),
+                            currencyFrom.code,
+                            action.code
+                        ).toString()
+                    }
+                }
+            }
+        })
+    }
+
+    override fun provideViewBinding(): ActivityCurrencyConvertorBinding =
+        ActivityCurrencyConvertorBinding.inflate(layoutInflater)
+
+    override fun providePageName(): String = TAG
+
+    override fun provideViewModel(): CurrencyConvertorViewModel =
+        ViewModelProvider(this)[CurrencyConvertorViewModel::class.java]
+
+    override fun setupView(savedInstanceState: Bundle?) {
+        binding.rvCurrencies.adapter = currencyAdapter
+
+        viewModel.getCurrencies()
+        viewModel.getLatestRates()
+
+        binding.tvSelectCurrency.setOnClickListener {
+            SelectCurrencyFragment.newInstance()
+                .show(supportFragmentManager, SelectCurrencyFragment.TAG)
+        }
+    }
+
+    override fun setupObservers() {
+        super.setupObservers()
+
+        viewModel.loading.observe(this) { isVisible ->
+            if (isVisible) {
+                binding.loadingProgressbar.visible()
+            } else {
+                binding.loadingProgressbar.gone()
+            }
+        }
+
+        viewModel.currencyDetailsListLiveData.observe(this) {
+            updateRecyclerView(it)
+        }
+
+        viewModel.currencyDetailsFrom.observe(this) {
+            binding.tvSelectCurrency.text = it.name
+        }
+    }
+
+    private fun updateRecyclerView(currencies: List<CurrencyDetails>?) {
+        if (currencies == null) return
+        currencyAdapter.appendList(currencies)
+        hideLoading()
+    }
+
+    private fun showLoading(message: String) {
+        binding.apply {
+            tvLoadingMessage.text = message
+            tvLoadingMessage.visible()
+            loadingProgressbar.visible()
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            tvLoadingMessage.gone()
+            loadingProgressbar.gone()
+        }
+    }
+}
