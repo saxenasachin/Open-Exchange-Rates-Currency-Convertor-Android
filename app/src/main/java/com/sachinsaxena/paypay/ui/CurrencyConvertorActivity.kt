@@ -12,6 +12,7 @@ import com.sachinsaxena.common.extensions.toast
 import com.sachinsaxena.common.extensions.visible
 import com.sachinsaxena.paypay.databinding.ActivityCurrencyConvertorBinding
 import com.sachinsaxena.paypay.model.CurrencyDetails
+import com.sachinsaxena.paypay.utils.CurrencyValidator
 
 class CurrencyConvertorActivity :
     BaseBindingActivity<CurrencyConvertorViewModel, ActivityCurrencyConvertorBinding>() {
@@ -28,19 +29,23 @@ class CurrencyConvertorActivity :
             override fun performAction(action: Any) {
                 when (action) {
                     is OnCurrencySelect -> {
-                        val value = binding.etAmount.text
-                        if (value.isNullOrBlank()) {
-                            toast("Please enter yout amount")
+                        val amountEntered = binding.etAmount.text?.trim()
+                        if (CurrencyValidator.isValidAmountEntered(amountEntered)) {
+                            toast("Please enter correct amount")
                             return
                         }
-                        val currencyFrom = viewModel.currencyDetailsFrom.value
-                        if (currencyFrom == null) {
-                            toast("Please select your currency")
+                        val currencyFromCode = viewModel.currencyDetailsFrom.value?.code
+                        if (!CurrencyValidator.isValidCurrencyCode(currencyFromCode)) {
+                            toast("Please select correct currency")
+                            return
+                        }
+                        if (CurrencyValidator.isValidConversion(currencyFromCode!!, action.code)) {
+                            toast("Please don't convert into same currency, the value will not change!!")
                             return
                         }
                         binding.btConvert.text = viewModel.getConvertedRate(
                             binding.etAmount.text.toString().toDouble(),
-                            currencyFrom.code,
+                            currencyFromCode,
                             action.code
                         ).toString()
                     }
