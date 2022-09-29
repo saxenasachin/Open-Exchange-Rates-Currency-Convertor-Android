@@ -30,7 +30,7 @@ class CurrencyConvertorActivity :
                 when (action) {
                     is OnCurrencySelect -> {
                         val amountEntered = binding.etAmount.text?.trim()
-                        if (CurrencyValidator.isValidAmountEntered(amountEntered)) {
+                        if (!CurrencyValidator.isValidAmountEntered(amountEntered)) {
                             toast("Please enter correct amount")
                             return
                         }
@@ -39,7 +39,7 @@ class CurrencyConvertorActivity :
                             toast("Please select correct currency")
                             return
                         }
-                        if (CurrencyValidator.isValidConversion(currencyFromCode!!, action.code)) {
+                        if (!CurrencyValidator.isValidConversion(currencyFromCode!!, action.code)) {
                             toast("Please don't convert into same currency, the value will not change!!")
                             return
                         }
