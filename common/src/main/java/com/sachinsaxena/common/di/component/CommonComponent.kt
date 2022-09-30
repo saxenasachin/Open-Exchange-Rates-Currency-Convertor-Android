@@ -2,13 +2,13 @@ package com.sachinsaxena.common.di.component
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
-import com.sachinsaxena.common.di.module.CommonModule
+import com.sachinsaxena.common.di.module.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 
 @Component(
     modules = [
-        CommonModule::class
+        NetworkModule::class
     ]
 )
 interface CommonComponent {

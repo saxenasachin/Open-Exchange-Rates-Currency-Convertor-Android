@@ -5,19 +5,23 @@ import androidx.lifecycle.viewModelScope
 import com.sachinsaxena.common.base.BaseViewModel
 import com.sachinsaxena.common.model.CurrencyDetails
 import com.sachinsaxena.common.model.LatestCurrencyRates
+import com.sachinsaxena.common.network.OpenExchangeRatesApiService
 import com.sachinsaxena.paypay.BuildConfig
-import com.sachinsaxena.paypay.network.Network
 import com.sachinsaxena.paypay.presentation.CurrencyConvertorDataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
 /**
 Created by Sachin Saxena on 29/09/22.
  */
-class CurrencyConvertorViewModel() : BaseViewModel<CurrencyConvertorDataState>() {
+class CurrencyConvertorViewModel @Inject constructor(
+    private val openExchangeRatesApiService: OpenExchangeRatesApiService
+) :
+    BaseViewModel<CurrencyConvertorDataState>() {
 
     override val stateObservable: MutableLiveData<CurrencyConvertorDataState> by lazy {
         MutableLiveData<CurrencyConvertorDataState>()
@@ -33,7 +37,7 @@ class CurrencyConvertorViewModel() : BaseViewModel<CurrencyConvertorDataState>()
 
         viewModelScope.launch(Dispatchers.IO) {
             val apiInterface =
-                Network.openExchangeRatesApiService.getLatestRates(
+                openExchangeRatesApiService.getLatestRates(
                     appId = BuildConfig.OPEN_EXCHANGE_APP_ID
                 )
             apiInterface.enqueue(object : Callback<LatestCurrencyRates> {
@@ -57,7 +61,7 @@ class CurrencyConvertorViewModel() : BaseViewModel<CurrencyConvertorDataState>()
 
         viewModelScope.launch(Dispatchers.IO) {
             val apiInterface =
-                Network.openExchangeRatesApiService.getCurrencies(
+                openExchangeRatesApiService.getCurrencies(
                     appId = BuildConfig.OPEN_EXCHANGE_APP_ID
                 )
             apiInterface.enqueue(object : Callback<Map<String, String>> {

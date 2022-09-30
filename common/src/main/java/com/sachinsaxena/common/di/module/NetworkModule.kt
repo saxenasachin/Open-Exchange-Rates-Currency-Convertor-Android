@@ -17,7 +17,7 @@ import javax.inject.Singleton
 const val TIMEOUT = 20L
 
 @Module
-class CommonModule {
+class NetworkModule {
     @Provides
     @Singleton
     fun provideDatabaseService() = DatabaseService()

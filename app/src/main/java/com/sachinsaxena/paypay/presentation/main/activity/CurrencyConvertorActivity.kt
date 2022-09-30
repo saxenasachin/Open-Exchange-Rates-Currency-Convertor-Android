@@ -4,17 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.sachinsaxena.common.InjectUtils
 import com.sachinsaxena.common.base.BaseBindingActivity
 import com.sachinsaxena.common.base.action.ActionPerformer
 import com.sachinsaxena.common.base.action.OnCurrencySelect
 import com.sachinsaxena.common.extensions.gone
 import com.sachinsaxena.common.extensions.toast
+import com.sachinsaxena.common.extensions.viewModelProvider
 import com.sachinsaxena.common.extensions.visible
 import com.sachinsaxena.common.model.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.ActivityCurrencyConvertorBinding
+import com.sachinsaxena.paypay.di.component.DaggerPayPayAppComponent
 import com.sachinsaxena.paypay.presentation.main.adapter.CurrencyListAdaptor
 import com.sachinsaxena.paypay.presentation.main.viewmodel.CurrencyConvertorViewModel
 import com.sachinsaxena.paypay.utils.CurrencyValidator
+import javax.inject.Inject
 
 class CurrencyConvertorActivity :
     BaseBindingActivity<CurrencyConvertorViewModel, ActivityCurrencyConvertorBinding>() {
@@ -56,13 +60,25 @@ class CurrencyConvertorActivity :
         })
     }
 
+    @Inject
+    lateinit var viewModelProvider: ViewModelProvider.Factory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        DaggerPayPayAppComponent
+            .builder()
+            .commonComponent(InjectUtils.provideBaseComponent(applicationContext))
+            .build()
+            .inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun provideViewBinding(): ActivityCurrencyConvertorBinding =
         ActivityCurrencyConvertorBinding.inflate(layoutInflater)
 
     override fun providePageName(): String = TAG
 
     override fun provideViewModel(): CurrencyConvertorViewModel =
-        ViewModelProvider(this)[CurrencyConvertorViewModel::class.java]
+        viewModelProvider(viewModelProvider)
 
     override fun setupView(savedInstanceState: Bundle?) {
         binding.rvCurrencies.adapter = currencyAdapter
