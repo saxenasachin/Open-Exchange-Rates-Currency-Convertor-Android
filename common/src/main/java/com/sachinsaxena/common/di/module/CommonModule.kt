@@ -1,25 +1,31 @@
-package com.sachinsaxena.paypay.network
+package com.sachinsaxena.common.di.module
 
+import com.doubtnut.core.di.qualifier.ApiRetrofit
+import com.sachinsaxena.common.BuildConfig
+import com.sachinsaxena.common.di.qualifier.DefaultOkHttpClient
+import com.sachinsaxena.common.network.DatabaseService
 import com.sachinsaxena.common.network.OpenExchangeRatesApiService
-import com.sachinsaxena.paypay.BuildConfig
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
-/**
-Created by Sachin Saxena on 29/09/22.
- */
-object Network {
+const val TIMEOUT = 20L
 
-    private const val TIMEOUT = 20L
+@Module
+class CommonModule {
+    @Provides
+    @Singleton
+    fun provideDatabaseService() = DatabaseService()
 
-    val openExchangeRatesApiService: OpenExchangeRatesApiService by lazy {
-        buildRetrofit().create(OpenExchangeRatesApiService::class.java)
-    }
-
-    private fun getOkHttpClient(): OkHttpClient {
+    @Provides
+    @Singleton
+    @DefaultOkHttpClient
+    fun provideOkHttpClient(): OkHttpClient {
         return if (BuildConfig.DEBUG) {
             OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -38,10 +44,20 @@ object Network {
             .build()
     }
 
-    private fun buildRetrofit(): Retrofit {
+    @Provides
+    @Singleton
+    @ApiRetrofit
+    fun provideRetroFit(
+        @DefaultOkHttpClient okHttpClient: OkHttpClient,
+    ): Retrofit {
         return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .client(getOkHttpClient())
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideNetworkService(@ApiRetrofit retrofit: Retrofit): OpenExchangeRatesApiService =
+        retrofit.create(OpenExchangeRatesApiService::class.java)
 }

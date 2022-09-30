@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.model
+package com.sachinsaxena.common.model
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

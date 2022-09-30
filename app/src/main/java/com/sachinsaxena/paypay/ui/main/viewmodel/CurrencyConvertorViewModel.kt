@@ -1,11 +1,11 @@
-package com.sachinsaxena.paypay.ui
+package com.sachinsaxena.paypay.ui.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sachinsaxena.common.base.BaseViewModel
+import com.sachinsaxena.common.model.CurrencyDetails
+import com.sachinsaxena.common.model.LatestCurrencyRates
 import com.sachinsaxena.paypay.BuildConfig
-import com.sachinsaxena.paypay.model.CurrencyDetails
-import com.sachinsaxena.paypay.model.LatestCurrencyRates
 import com.sachinsaxena.paypay.network.Network
 import com.sachinsaxena.paypay.presentation.CurrencyConvertorDataState
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ import retrofit2.Response
 /**
 Created by Sachin Saxena on 29/09/22.
  */
-class CurrencyConvertorViewModel : BaseViewModel<CurrencyConvertorDataState>() {
+class CurrencyConvertorViewModel() : BaseViewModel<CurrencyConvertorDataState>() {
 
     override val stateObservable: MutableLiveData<CurrencyConvertorDataState> by lazy {
         MutableLiveData<CurrencyConvertorDataState>()
@@ -86,7 +86,7 @@ class CurrencyConvertorViewModel : BaseViewModel<CurrencyConvertorDataState>() {
     fun getConvertedRate(value: Double, currencyFromCode: String, currencyToCode: String): Double {
         val currencyFromRateInDollar = latestCurrencyRates[currencyFromCode] ?: return 0.0
         val currencyToRateInDollar = latestCurrencyRates[currencyToCode] ?: return 0.0
-        val ratio =  currencyToRateInDollar / currencyFromRateInDollar
+        val ratio = currencyToRateInDollar / currencyFromRateInDollar
         return ratio * value
     }
 }

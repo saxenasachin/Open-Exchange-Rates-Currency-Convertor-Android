@@ -1,17 +1,19 @@
-package com.sachinsaxena.paypay.ui
+package com.sachinsaxena.paypay.ui.main.activity
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.sachinsaxena.common.base.ActionPerformer
 import com.sachinsaxena.common.base.BaseBindingActivity
-import com.sachinsaxena.common.base.OnCurrencySelect
+import com.sachinsaxena.common.base.action.ActionPerformer
+import com.sachinsaxena.common.base.action.OnCurrencySelect
 import com.sachinsaxena.common.extensions.gone
 import com.sachinsaxena.common.extensions.toast
 import com.sachinsaxena.common.extensions.visible
+import com.sachinsaxena.common.model.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.ActivityCurrencyConvertorBinding
-import com.sachinsaxena.paypay.model.CurrencyDetails
+import com.sachinsaxena.paypay.ui.main.adapter.CurrencyListAdaptor
+import com.sachinsaxena.paypay.ui.main.viewmodel.CurrencyConvertorViewModel
 import com.sachinsaxena.paypay.utils.CurrencyValidator
 
 class CurrencyConvertorActivity :

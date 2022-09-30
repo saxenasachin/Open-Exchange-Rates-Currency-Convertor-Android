@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.sachinsaxena.common.di.component.DaggerCommonComponent
 
 /**
 Created by Sachin Saxena on 29/09/22.
@@ -18,6 +19,13 @@ abstract class BaseBindingActivity<VM : BaseViewModel<*>, VB : ViewBinding>
     lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        DaggerCommonComponent
+            .builder()
+            .application(application)
+            .build()
+            .inject(this)
+
         super.onCreate(savedInstanceState)
         viewModel = provideViewModel()
         binding = provideViewBinding()
@@ -40,16 +48,6 @@ abstract class BaseBindingActivity<VM : BaseViewModel<*>, VB : ViewBinding>
         currentFocus?.let {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
-        }
-    }
-
-    open fun goBack() = onBackPressed()
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStackImmediate()
-        } else {
-            super.onBackPressed()
         }
     }
 

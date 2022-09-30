@@ -1,6 +1,6 @@
-package com.sachinsaxena.paypay.network
+package com.sachinsaxena.common.network
 
-import com.sachinsaxena.paypay.model.LatestCurrencyRates
+import com.sachinsaxena.common.model.LatestCurrencyRates
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

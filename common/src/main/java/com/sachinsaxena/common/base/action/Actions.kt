@@ -1,4 +1,4 @@
-package com.sachinsaxena.common.base
+package com.sachinsaxena.common.base.action
 
 
 /**

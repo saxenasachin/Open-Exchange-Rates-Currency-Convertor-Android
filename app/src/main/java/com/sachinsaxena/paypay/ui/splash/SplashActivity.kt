@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.ui
+package com.sachinsaxena.paypay.ui.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.sachinsaxena.paypay.databinding.ActivitySplashBinding
+import com.sachinsaxena.paypay.ui.main.activity.CurrencyConvertorActivity
 
 /**
 Created by Sachin Saxena on 29/09/22.

@@ -1,4 +1,4 @@
-package com.sachinsaxena.common.base
+package com.sachinsaxena.common.base.glide
 
 import android.content.Context
 import com.bumptech.glide.GlideBuilder

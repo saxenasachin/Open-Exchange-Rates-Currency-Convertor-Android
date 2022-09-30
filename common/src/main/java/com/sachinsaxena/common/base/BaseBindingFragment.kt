@@ -51,10 +51,6 @@ abstract class BaseBindingFragment<VM : BaseViewModel<*>, VB : ViewBinding> :
         _binding = null
     }
 
-    fun goBack() {
-        if (activity is BaseBindingActivity<*, *>) (activity as BaseBindingActivity<*, *>).goBack()
-    }
-
     fun openKeyboard() {
         if (activity is BaseBindingActivity<*, *>) (activity as BaseBindingActivity<*, *>).openKeyboard()
     }

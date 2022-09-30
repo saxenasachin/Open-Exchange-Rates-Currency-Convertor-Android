@@ -1,13 +1,13 @@
-package com.sachinsaxena.paypay.ui
+package com.sachinsaxena.paypay.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sachinsaxena.paypay.databinding.LayoutCurrencyBinding
-import com.sachinsaxena.paypay.model.CurrencyDetails
-import com.sachinsaxena.common.base.ActionPerformer
 import com.sachinsaxena.common.base.BaseViewHolder
-import com.sachinsaxena.common.base.OnCurrencySelect
+import com.sachinsaxena.common.base.action.ActionPerformer
+import com.sachinsaxena.common.base.action.OnCurrencySelect
+import com.sachinsaxena.common.model.CurrencyDetails
+import com.sachinsaxena.paypay.databinding.LayoutCurrencyBinding
 
 /**
 Created by Sachin Saxena on 29/09/22.
