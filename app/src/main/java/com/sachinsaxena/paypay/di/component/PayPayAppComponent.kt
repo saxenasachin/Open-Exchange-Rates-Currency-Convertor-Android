@@ -3,7 +3,7 @@ package com.sachinsaxena.paypay.di.component
 import com.sachinsaxena.common.di.component.CommonComponent
 import com.sachinsaxena.common.di.module.CommonModule
 import com.sachinsaxena.paypay.di.module.PayPayAppModule
-import com.sachinsaxena.paypay.ui.main.activity.CurrencyConvertorActivity
+import com.sachinsaxena.paypay.presentation.main.activity.CurrencyConvertorActivity
 import dagger.Component
 import javax.inject.Singleton
 

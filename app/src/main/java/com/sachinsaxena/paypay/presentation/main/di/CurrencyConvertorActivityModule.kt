@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.ui.main.di
+package com.sachinsaxena.paypay.presentation.main.di
 
 import com.doubtnut.core.di.qualifier.ApiRetrofit
 import com.sachinsaxena.common.network.OpenExchangeRatesApiService

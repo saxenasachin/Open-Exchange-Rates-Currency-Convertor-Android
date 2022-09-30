@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.ui.main.adapter
+package com.sachinsaxena.paypay.presentation.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -17,14 +17,14 @@
         android:theme="@style/Theme.PayPay"
         tools:targetApi="31">
         <activity
-            android:name="com.sachinsaxena.paypay.ui.splash.SplashActivity"
+            android:name="com.sachinsaxena.paypay.presentation.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sachinsaxena.paypay.ui.main.activity.CurrencyConvertorActivity" />
+        <activity android:name="com.sachinsaxena.paypay.presentation.main.activity.CurrencyConvertorActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.ui.main.activity
+package com.sachinsaxena.paypay.presentation.main.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import com.sachinsaxena.common.base.action.ActionPerformer
 import com.sachinsaxena.common.base.action.OnCurrencySelect
 import com.sachinsaxena.common.model.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.FragmentSelectCurrencyBinding
-import com.sachinsaxena.paypay.ui.main.adapter.CurrencyListAdaptor
-import com.sachinsaxena.paypay.ui.main.viewmodel.CurrencyConvertorViewModel
+import com.sachinsaxena.paypay.presentation.main.adapter.CurrencyListAdaptor
+import com.sachinsaxena.paypay.presentation.main.viewmodel.CurrencyConvertorViewModel
 
 class SelectCurrencyFragment :
     BaseBindingDialogFragment<CurrencyConvertorViewModel, FragmentSelectCurrencyBinding>() {

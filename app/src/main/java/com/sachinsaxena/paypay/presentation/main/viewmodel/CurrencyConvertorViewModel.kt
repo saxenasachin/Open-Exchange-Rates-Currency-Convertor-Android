@@ -1,4 +1,4 @@
-package com.sachinsaxena.paypay.ui.main.viewmodel
+package com.sachinsaxena.paypay.presentation.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope

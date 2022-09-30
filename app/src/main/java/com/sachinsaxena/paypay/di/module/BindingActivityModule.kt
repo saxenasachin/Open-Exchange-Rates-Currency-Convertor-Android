@@ -1,8 +1,8 @@
 package com.sachinsaxena.paypay.di.module
 
 import com.doubtnut.core.di.scope.PerActivity
-import com.sachinsaxena.paypay.ui.main.activity.CurrencyConvertorActivity
-import com.sachinsaxena.paypay.ui.main.di.CurrencyConvertorActivityModule
+import com.sachinsaxena.paypay.presentation.main.activity.CurrencyConvertorActivity
+import com.sachinsaxena.paypay.presentation.main.di.CurrencyConvertorActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
