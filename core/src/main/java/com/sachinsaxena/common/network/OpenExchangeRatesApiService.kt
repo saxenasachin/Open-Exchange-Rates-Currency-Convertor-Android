@@ -10,7 +10,7 @@ Created by Sachin Saxena on 29/09/22.
 interface OpenExchangeRatesApiService {
 
     @GET("latest.json")
-    fun getLatestRates(
+    suspend fun getLatestRates(
         @Query("app_id") appId: String
     ): LatestCurrencyRates
 

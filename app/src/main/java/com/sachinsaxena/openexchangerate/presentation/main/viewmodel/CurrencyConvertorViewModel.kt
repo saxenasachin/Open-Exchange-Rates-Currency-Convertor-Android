@@ -47,7 +47,7 @@ class CurrencyConvertorViewModel @Inject constructor(
             loadingLiveData.value = true
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    val result = currencyRatesApiInteractor.invoke()
+                    val result = currencyRatesApiInteractor.getCurrencyRatesFromApi()
                     currencyRatesDbInteractor.addCurrencyRatesToDb(result)
                     latestCurrencyRates.clear()
                     latestCurrencyRates.addAll(result)
