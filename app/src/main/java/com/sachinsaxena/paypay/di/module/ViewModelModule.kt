@@ -2,8 +2,8 @@ package com.sachinsaxena.paypay.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sachinsaxena.common.base.viewmodel.ViewModelFactory
 import com.sachinsaxena.common.di.scope.ViewModelKey
+import com.sachinsaxena.paypay.presentation.base.viewmodel.ViewModelFactory
 import com.sachinsaxena.paypay.presentation.main.viewmodel.CurrencyConvertorViewModel
 import dagger.Binds
 import dagger.Module

@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.sachinsaxena.common.base.BaseBindingDialogFragment
-import com.sachinsaxena.common.base.action.ActionPerformer
-import com.sachinsaxena.common.base.action.OnCurrencySelect
-import com.sachinsaxena.common.model.CurrencyDetails
+import com.sachinsaxena.paypay.presentation.base.BaseBindingDialogFragment
+import com.sachinsaxena.paypay.presentation.base.action.ActionPerformer
+import com.sachinsaxena.paypay.presentation.base.action.OnCurrencySelect
+import com.sachinsaxena.common.domain.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.FragmentSelectCurrencyBinding
 import com.sachinsaxena.paypay.presentation.main.adapter.CurrencyListAdaptor
 import com.sachinsaxena.paypay.presentation.main.viewmodel.CurrencyConvertorViewModel

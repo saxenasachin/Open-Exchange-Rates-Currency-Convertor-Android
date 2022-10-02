@@ -1,8 +1,8 @@
-package com.sachinsaxena.common.base
+package com.sachinsaxena.paypay.presentation.base
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.sachinsaxena.common.base.action.ActionPerformer
+import com.sachinsaxena.paypay.presentation.base.action.ActionPerformer
 
 /**
 Created by Sachin Saxena on 29/09/22.

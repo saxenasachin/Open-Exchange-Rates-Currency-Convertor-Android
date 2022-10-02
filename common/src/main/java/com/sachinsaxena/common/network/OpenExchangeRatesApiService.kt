@@ -1,7 +1,6 @@
 package com.sachinsaxena.common.network
 
-import com.sachinsaxena.common.model.LatestCurrencyRates
-import retrofit2.Call
+import com.sachinsaxena.common.domain.LatestCurrencyRates
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,10 +12,10 @@ interface OpenExchangeRatesApiService {
     @GET("latest.json")
     fun getLatestRates(
         @Query("app_id") appId: String
-    ): Call<LatestCurrencyRates>
+    ): LatestCurrencyRates
 
     @GET("currencies.json")
-    fun getCurrencies(
+    suspend fun getCurrencies(
         @Query("app_id") appId: String
-    ): Call<Map<String, String>>
+    ): Map<String, String>
 }

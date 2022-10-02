@@ -1,4 +1,4 @@
-package com.sachinsaxena.common.base.viewmodel
+package com.sachinsaxena.paypay.presentation.base.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

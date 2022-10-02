@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.sachinsaxena.common.InjectUtils
-import com.sachinsaxena.common.base.BaseBindingActivity
-import com.sachinsaxena.common.base.action.ActionPerformer
-import com.sachinsaxena.common.base.action.OnCurrencySelect
+import com.sachinsaxena.common.domain.CurrencyDetails
 import com.sachinsaxena.common.extensions.gone
 import com.sachinsaxena.common.extensions.toast
 import com.sachinsaxena.common.extensions.viewModelProvider
 import com.sachinsaxena.common.extensions.visible
-import com.sachinsaxena.common.model.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.ActivityCurrencyConvertorBinding
 import com.sachinsaxena.paypay.di.component.DaggerPayPayAppComponent
+import com.sachinsaxena.paypay.di.module.AppModule
+import com.sachinsaxena.paypay.presentation.base.BaseBindingActivity
+import com.sachinsaxena.paypay.presentation.base.action.ActionPerformer
+import com.sachinsaxena.paypay.presentation.base.action.OnCurrencySelect
 import com.sachinsaxena.paypay.presentation.main.adapter.CurrencyListAdaptor
 import com.sachinsaxena.paypay.presentation.main.viewmodel.CurrencyConvertorViewModel
 import com.sachinsaxena.paypay.utils.CurrencyValidator
@@ -66,6 +67,7 @@ class CurrencyConvertorActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         DaggerPayPayAppComponent
             .builder()
+            .appModule(AppModule(application))
             .commonComponent(InjectUtils.provideBaseComponent(applicationContext))
             .build()
             .inject(this)
@@ -82,10 +84,6 @@ class CurrencyConvertorActivity :
 
     override fun setupView(savedInstanceState: Bundle?) {
         binding.rvCurrencies.adapter = currencyAdapter
-
-        viewModel.getCurrencies()
-        viewModel.getLatestRates()
-
         binding.tvSelectCurrency.setOnClickListener {
             SelectCurrencyFragment.newInstance()
                 .show(supportFragmentManager, SelectCurrencyFragment.TAG)
@@ -95,7 +93,7 @@ class CurrencyConvertorActivity :
     override fun setupObservers() {
         super.setupObservers()
 
-        viewModel.loading.observe(this) { isVisible ->
+        viewModel.loadingLiveData.observe(this) { isVisible ->
             if (isVisible) {
                 binding.loadingProgressbar.visible()
             } else {

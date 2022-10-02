@@ -1,4 +1,4 @@
-package com.sachinsaxena.common.model
+package com.sachinsaxena.common.domain
 
 import androidx.annotation.Keep
 

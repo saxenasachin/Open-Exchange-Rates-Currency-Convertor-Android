@@ -3,10 +3,10 @@ package com.sachinsaxena.paypay.presentation.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sachinsaxena.common.base.BaseViewHolder
-import com.sachinsaxena.common.base.action.ActionPerformer
-import com.sachinsaxena.common.base.action.OnCurrencySelect
-import com.sachinsaxena.common.model.CurrencyDetails
+import com.sachinsaxena.paypay.presentation.base.BaseViewHolder
+import com.sachinsaxena.paypay.presentation.base.action.ActionPerformer
+import com.sachinsaxena.paypay.presentation.base.action.OnCurrencySelect
+import com.sachinsaxena.common.domain.CurrencyDetails
 import com.sachinsaxena.paypay.databinding.LayoutCurrencyBinding
 
 /**

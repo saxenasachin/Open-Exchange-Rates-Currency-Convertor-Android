@@ -2,95 +2,127 @@ package com.sachinsaxena.paypay.presentation.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.sachinsaxena.common.base.BaseViewModel
-import com.sachinsaxena.common.model.CurrencyDetails
-import com.sachinsaxena.common.model.LatestCurrencyRates
-import com.sachinsaxena.common.network.OpenExchangeRatesApiService
-import com.sachinsaxena.paypay.BuildConfig
+import com.sachinsaxena.common.domain.CurrencyDetails
+import com.sachinsaxena.common.domain.CurrencyRate
+import com.sachinsaxena.common.interactors.CurrencyListApiInteractor
+import com.sachinsaxena.common.interactors.CurrencyListDbInteractor
+import com.sachinsaxena.common.interactors.CurrencyRatesApiInteractor
+import com.sachinsaxena.common.interactors.CurrencyRatesDbInteractor
+import com.sachinsaxena.paypay.PayPayApplication
 import com.sachinsaxena.paypay.presentation.CurrencyConvertorDataState
+import com.sachinsaxena.paypay.presentation.base.BaseViewModel
+import com.sachinsaxena.paypay.utils.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
 Created by Sachin Saxena on 29/09/22.
  */
 class CurrencyConvertorViewModel @Inject constructor(
-    private val openExchangeRatesApiService: OpenExchangeRatesApiService
-) :
-    BaseViewModel<CurrencyConvertorDataState>() {
+    private val currencyListDbInteractor: CurrencyListDbInteractor,
+    private val currencyListApiInteractor: CurrencyListApiInteractor,
+    private val currencyRatesDbInteractor: CurrencyRatesDbInteractor,
+    private val currencyRatesApiInteractor: CurrencyRatesApiInteractor
+) : BaseViewModel<CurrencyConvertorDataState>() {
 
     override val stateObservable: MutableLiveData<CurrencyConvertorDataState> by lazy {
         MutableLiveData<CurrencyConvertorDataState>()
     }
 
-    val loading = MutableLiveData<Boolean>()
+    val loadingLiveData = MutableLiveData<Boolean>()
     val currencyDetailsListLiveData = MutableLiveData<List<CurrencyDetails>>()
-    private var latestCurrencyRates = mutableMapOf<String, Double>()
+    private var latestCurrencyRates = mutableListOf<CurrencyRate>()
+
+    init {
+        getCurrencies()
+        getLatestRates()
+    }
 
     val currencyDetailsFrom = MutableLiveData<CurrencyDetails>()
 
-    fun getLatestRates() {
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val apiInterface =
-                openExchangeRatesApiService.getLatestRates(
-                    appId = BuildConfig.OPEN_EXCHANGE_APP_ID
-                )
-            apiInterface.enqueue(object : Callback<LatestCurrencyRates> {
-                override fun onResponse(
-                    call: Call<LatestCurrencyRates>,
-                    response: Response<LatestCurrencyRates>
-                ) {
-                    latestCurrencyRates = response.body()?.rates.orEmpty().toMutableMap()
+    private fun getLatestRates() {
+        if (NetworkUtils.isConnected(PayPayApplication.INSTANCE)) {
+            loadingLiveData.value = true
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val result = currencyRatesApiInteractor.invoke()
+                    currencyRatesDbInteractor.addCurrencyRatesToDb(result)
+                    latestCurrencyRates.clear()
+                    latestCurrencyRates.addAll(result)
+                    withContext(Dispatchers.Main) {
+                        loadingLiveData.value = false
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        loadingLiveData.value = false
+                    }
                 }
-
-                override fun onFailure(call: Call<LatestCurrencyRates>, t: Throwable) {
-
-                }
-            })
+            }
+        } else {
+            getLatestRatesFromDb()
         }
     }
 
-    fun getCurrencies() {
-
-        loading.value = true
-
+    private fun getLatestRatesFromDb() {
         viewModelScope.launch(Dispatchers.IO) {
-            val apiInterface =
-                openExchangeRatesApiService.getCurrencies(
-                    appId = BuildConfig.OPEN_EXCHANGE_APP_ID
-                )
-            apiInterface.enqueue(object : Callback<Map<String, String>> {
-                override fun onResponse(
-                    call: Call<Map<String, String>>,
-                    response: Response<Map<String, String>>
-                ) {
-                    val currencyMap = response.body().orEmpty()
-                    val currencyDetailsLists: List<CurrencyDetails> = currencyMap.map {
-                        val code = it.key
-                        val name = it.value
-                        CurrencyDetails(code, name)
+            try {
+                val result = currencyRatesDbInteractor.getCurrencyRatesFromDb()
+                latestCurrencyRates.clear()
+                latestCurrencyRates.addAll(result)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getCurrencies() {
+        if (NetworkUtils.isConnected(PayPayApplication.INSTANCE)) {
+            loadingLiveData.value = true
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val result = currencyListApiInteractor.invoke()
+                    currencyListDbInteractor.addCurrenciesToDb(result)
+                    withContext(Dispatchers.Main) {
+                        loadingLiveData.value = false
+                        currencyDetailsListLiveData.value = result
                     }
-                    loading.value = false
-
-                    currencyDetailsListLiveData.value = currencyDetailsLists
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        loadingLiveData.value = false
+                    }
+                    e.printStackTrace()
                 }
+            }
+        } else {
+            getCurrencyListFromDb()
+        }
+    }
 
-                override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
-                    loading.value = false
+    private fun getCurrencyListFromDb() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = currencyListDbInteractor.getCurrenciesFromDb()
+                withContext(Dispatchers.Main) {
+                    loadingLiveData.value = false
+                    currencyDetailsListLiveData.value = result
                 }
-            })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun getConvertedRate(value: Double, currencyFromCode: String, currencyToCode: String): Double {
-        val currencyFromRateInDollar = latestCurrencyRates[currencyFromCode] ?: return 0.0
-        val currencyToRateInDollar = latestCurrencyRates[currencyToCode] ?: return 0.0
-        val ratio = currencyToRateInDollar / currencyFromRateInDollar
+        val currencyFromRateInDollar = latestCurrencyRates.find {
+            it.code == currencyFromCode
+        } ?: return 0.0
+        val currencyToRateInDollar = latestCurrencyRates.find {
+            it.code == currencyToCode
+        } ?: return 0.0
+        val ratio = currencyToRateInDollar.rate / currencyFromRateInDollar.rate
         return ratio * value
     }
 }

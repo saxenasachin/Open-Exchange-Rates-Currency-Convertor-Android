@@ -1,14 +1,15 @@
 package com.sachinsaxena.common.di.component
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatActivity
 import com.sachinsaxena.common.di.module.NetworkModule
+import com.sachinsaxena.common.di.module.RepositoryModule
 import dagger.BindsInstance
 import dagger.Component
 
 @Component(
     modules = [
-        NetworkModule::class
+        NetworkModule::class,
+        RepositoryModule::class
     ]
 )
 interface CommonComponent {
@@ -23,6 +24,4 @@ interface CommonComponent {
     }
 
     fun inject(app: Application)
-
-    fun inject(baseBindingActivity: AppCompatActivity)
 }

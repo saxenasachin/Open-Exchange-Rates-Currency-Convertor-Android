@@ -1,24 +1,23 @@
-package com.sachinsaxena.common.di.module
+package com.sachinsaxena.common
 
-import com.sachinsaxena.common.BuildConfig
 import com.sachinsaxena.common.network.OpenExchangeRatesApiService
-import dagger.Module
-import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
-const val TIMEOUT = 20L
+/**
+Created by Sachin Saxena on 17/09/22.
+ */
+object Network {
+    private const val TIMEOUT = 20L
 
-@Module
-object NetworkModule {
+    val openExchangeRatesApiService: OpenExchangeRatesApiService by lazy {
+        buildRetrofit().create(OpenExchangeRatesApiService::class.java)
+    }
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    private fun getOkHttpClient(): OkHttpClient {
         return if (BuildConfig.DEBUG) {
             OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -37,19 +36,10 @@ object NetworkModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideRetroFit(
-        okHttpClient: OkHttpClient,
-    ): Retrofit {
+    private fun buildRetrofit(): Retrofit {
         return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .client(okHttpClient)
+            .client(getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
-    @Provides
-    @Singleton
-    fun provideNetworkService(retrofit: Retrofit): OpenExchangeRatesApiService =
-        retrofit.create(OpenExchangeRatesApiService::class.java)
 }

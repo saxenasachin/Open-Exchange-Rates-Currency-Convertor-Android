@@ -1,4 +1,4 @@
-package com.sachinsaxena.common.base
+package com.sachinsaxena.paypay.presentation.base
 
 import android.content.Context
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.sachinsaxena.common.di.component.DaggerCommonComponent
 
 /**
 Created by Sachin Saxena on 29/09/22.
@@ -19,13 +18,6 @@ abstract class BaseBindingActivity<VM : BaseViewModel<*>, VB : ViewBinding>
     lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        DaggerCommonComponent
-            .builder()
-            .application(application)
-            .build()
-            .inject(this)
-
         super.onCreate(savedInstanceState)
         viewModel = provideViewModel()
         binding = provideViewBinding()
