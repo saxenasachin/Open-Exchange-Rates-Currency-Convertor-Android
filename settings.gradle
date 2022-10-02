@@ -11,6 +11,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "PayPay"
+rootProject.name = "OpenExchangeRate"
 include ':app'
-include ':common'
+include ':core'
