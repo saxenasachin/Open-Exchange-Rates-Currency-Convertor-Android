@@ -8,7 +8,7 @@ Download APK from here to test it.
 <br/>
 <br/>
 
-<img width="200" height="550" alt="Landing screen" src="https://user-images.githubusercontent.com/22069181/193595106-44daae5b-f2f8-4ff2-8f79-a8f7dffc9705.jpg">&nbsp;&nbsp;&nbsp;&nbsp;<img width="200" height="550" src="https://user-images.githubusercontent.com/22069181/193595147-b4562495-f658-43bd-b573-6aec66ff9b05.jpg">&nbsp;&nbsp;&nbsp;&nbsp;<img width="200" height="550" alt="Closed Pull Requests screen" src="https://user-images.githubusercontent.com/22069181/193595180-fdbc1053-df73-4acb-87b8-959ddf7a7706.jpg">
+<img width="250" height="550" alt="Landing screen" src="https://user-images.githubusercontent.com/22069181/193595106-44daae5b-f2f8-4ff2-8f79-a8f7dffc9705.jpg">&nbsp;&nbsp;&nbsp;&nbsp;<img width="250" height="550" src="https://user-images.githubusercontent.com/22069181/193595147-b4562495-f658-43bd-b573-6aec66ff9b05.jpg">&nbsp;&nbsp;&nbsp;&nbsp;<img width="250" height="550" src="https://user-images.githubusercontent.com/22069181/193595180-fdbc1053-df73-4acb-87b8-959ddf7a7706.jpg">
 
 
 ## - About
